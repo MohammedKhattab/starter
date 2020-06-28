@@ -15,7 +15,15 @@ Auth::routes(['verify' => true]);
 Route::get('/home','HomeController@index')->name('home')->middleware('verified');
 
 Route::get('/',function(){
-   return 'Home';
+   return view('Offers/create');
+});
+Route::get('fillable','OfferController@getdata');
+
+Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function(){
+    Route::group(['prefix'=>'offers'],function (){
+        route::get('create','OfferController@create');
+        route::post('store','OfferController@store')->name('offer.store');
+    });
 });
 
 
@@ -82,3 +90,4 @@ Route::get('/',function(){
 //Auth::routes();
 //
 //Route::get('/home', 'HomeController@index')->name('home');
+
